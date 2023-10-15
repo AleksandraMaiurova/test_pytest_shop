@@ -7,6 +7,10 @@ def product():
     return Product("book", 100, "This is a book", 1000)
 
 @pytest.fixture
+def second_product():
+    return Product("card", 150, "Happy Birthday card", 500)
+
+@pytest.fixture
 def cart():
     return Cart()
 
@@ -61,12 +65,16 @@ class TestCart:
         assert product not in cart.products
 
 
-    def test_get_total_price(self, product, cart):
+    def test_get_total_price(self, product, cart, second_product):
         cart.add_product(product, 5)
         assert cart.get_total_price() == product.price*5
         cart.clear()
         cart.add_product(product)
         assert cart.get_total_price() == product.price
+        cart.clear()
+        cart.add_product(second_product, 20)
+        cart.add_product(product, 3)
+        assert cart.get_total_price() == product.price * 3 + second_product.price * 20
 
 
     def test_buy(self, product, cart):
