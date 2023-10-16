@@ -22,6 +22,7 @@ class Product:
     def __hash__(self):
         return hash(self.name + self.description)
 
+
 class Cart:
     products: dict[Product, int]
 
@@ -33,7 +34,6 @@ class Cart:
             self.products[product] = buy_count
         else:
             self.products[product] += buy_count
-
 
     def remove_product(self, product: Product, remove_count=None):
         if product in self.products:

@@ -1,14 +1,16 @@
 import pytest
-from test_shop.models import Product, Cart
+from models import Product, Cart
 
 
 @pytest.fixture
 def product():
     return Product("book", 100, "This is a book", 1000)
 
+
 @pytest.fixture
 def second_product():
     return Product("card", 150, "Happy Birthday card", 500)
+
 
 @pytest.fixture
 def cart():
@@ -23,7 +25,6 @@ class TestProducts:
         assert product.check_quantity(-1)
         assert product.check_quantity(1001) == False
 
-
     def test_product_buy(self, product):
         product.buy(1)
         assert product.check_quantity(999)
@@ -31,7 +32,7 @@ class TestProducts:
         assert product.check_quantity(0)
 
     def test_product_buy_more_than_available(self, product):
-          with pytest.raises(ValueError, match=r"продуктов не хватает"):
+        with pytest.raises(ValueError, match=r"продуктов не хватает"):
             product.buy(9999)
 
 
@@ -64,10 +65,9 @@ class TestCart:
         cart.clear()
         assert product not in cart.products
 
-
     def test_get_total_price(self, product, cart, second_product):
         cart.add_product(product, 5)
-        assert cart.get_total_price() == product.price*5
+        assert cart.get_total_price() == product.price * 5
         cart.clear()
         cart.add_product(product)
         assert cart.get_total_price() == product.price
@@ -75,7 +75,6 @@ class TestCart:
         cart.add_product(second_product, 20)
         cart.add_product(product, 3)
         assert cart.get_total_price() == product.price * 3 + second_product.price * 20
-
 
     def test_buy(self, product, cart):
         cart.add_product(product, 5)
@@ -89,18 +88,3 @@ class TestCart:
         with pytest.raises(ValueError):
             cart.add_product(product)
             cart.buy()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
